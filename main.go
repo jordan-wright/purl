@@ -32,37 +32,29 @@ func parseURL(rawurl string, cli args) (string, error) {
 	if err != nil {
 		return "", err
 	}
-	built := url.URL{}
 	parts := []string{}
 	// Normally, we could use a switch here, but Go's switch statements only
 	// execute the selected case, so we have to resort to if statements
 	if cli.scheme {
-		built.Scheme = parsed.Scheme
-		parts = append(parts, built.Scheme)
+		parts = append(parts, parsed.Scheme)
 	}
 	if cli.opaque {
-		built.Opaque = parsed.Opaque
-		parts = append(parts, built.Opaque)
+		parts = append(parts, parsed.Opaque)
 	}
 	if cli.user {
-		built.User = parsed.User
-		parts = append(parts, built.User.String())
+		parts = append(parts, parsed.User.String())
 	}
 	if cli.host {
-		built.Host = parsed.Host
-		parts = append(parts, built.Host)
+		parts = append(parts, parsed.Host)
 	}
 	if cli.path {
-		built.Path = parsed.Path
-		parts = append(parts, built.Path)
+		parts = append(parts, parsed.Path)
 	}
 	if cli.query {
-		built.RawQuery = parsed.RawQuery
-		parts = append(parts, built.RawQuery)
+		parts = append(parts, parsed.RawQuery)
 	}
 	if cli.fragment {
-		built.Fragment = parsed.Fragment
-		parts = append(parts, built.Fragment)
+		parts = append(parts, parsed.Fragment)
 	}
 	return strings.Join(parts, cli.separator), nil
 }
