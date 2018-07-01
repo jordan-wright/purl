@@ -42,7 +42,9 @@ func parseURL(rawurl string, cli args) (string, error) {
 		parts = append(parts, parsed.Opaque)
 	}
 	if cli.user {
-		parts = append(parts, parsed.User.String())
+		if parsed.User != nil {
+			parts = append(parts, parsed.User.String())
+		}
 	}
 	if cli.host {
 		parts = append(parts, parsed.Host)
