@@ -21,8 +21,6 @@ Flags:
   --separator=SEPARATOR  Separate results by a delimeter
 ```
 
-By default, URL parts are separated by a tab (\t). You can use the `--separator` flag to override this.
-
 ### Examples
 
 Print the hostname
@@ -32,11 +30,18 @@ $ echo "https://google.com/test" | purl --host
 google.com
 ```
 
+Print the scheme and hostname
+
+```
+$ echo "https://google.com/test/?q=test" | purl --scheme --host
+https://google.com
+```
+
 Print the hostname and path
 
 ```
 $ echo "https://google.com/test/?q=test" | purl --host --path
-google.com      /test/
+google.com/test/
 ```
 
 Print the user:password information:

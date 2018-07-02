@@ -5,7 +5,6 @@ import (
 	"fmt"
 	"net/url"
 	"os"
-	"strings"
 
 	"gopkg.in/alecthomas/kingpin.v2"
 )
@@ -32,33 +31,34 @@ func parseURL(rawurl string, cli args) (string, error) {
 	if err != nil {
 		return "", err
 	}
-	parts := []string{}
+	built := URL{}
 	// Normally, we could use a switch here, but Go's switch statements only
 	// execute the selected case, so we have to resort to if statements
 	if cli.scheme {
-		parts = append(parts, parsed.Scheme)
+		built.Scheme = parsed.Scheme
 	}
 	if cli.opaque {
-		parts = append(parts, parsed.Opaque)
+		built.Opaque = parsed.Opaque
 	}
 	if cli.user {
-		if parsed.User != nil {
-			parts = append(parts, parsed.User.String())
-		}
+		built.User = parsed.User
 	}
 	if cli.host {
-		parts = append(parts, parsed.Host)
+		built.Host = parsed.Host
 	}
 	if cli.path {
-		parts = append(parts, parsed.Path)
+		built.Path = parsed.Path
 	}
 	if cli.query {
-		parts = append(parts, parsed.RawQuery)
+		built.RawQuery = parsed.RawQuery
 	}
 	if cli.fragment {
-		parts = append(parts, parsed.Fragment)
+		built.Fragment = parsed.Fragment
 	}
-	return strings.Join(parts, cli.separator), nil
+	if cli.separator != "" {
+		return built.Join(cli.separator), nil
+	}
+	return built.String(), nil
 }
 
 func main() {
@@ -70,7 +70,7 @@ func main() {
 	kingpin.Flag("path", "Print the URL path").BoolVar(&cli.path)
 	kingpin.Flag("query", "Print the URL query").BoolVar(&cli.query)
 	kingpin.Flag("fragment", "Print the URL fragment").BoolVar(&cli.fragment)
-	kingpin.Flag("separator", "Separate results by a delimeter").Default("\t").StringVar(&cli.separator)
+	kingpin.Flag("separator", "Separate results by a delimeter").StringVar(&cli.separator)
 	kingpin.HelpFlag.Short('h')
 	kingpin.Parse()
 
